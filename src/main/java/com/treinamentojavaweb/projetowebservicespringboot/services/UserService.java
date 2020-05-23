@@ -42,6 +42,24 @@ public class UserService {
 		
 	}
 	
+	public User update(Long id, User user) {
+		
+		User userEntity = userRepository.getOne(id);
+		
+		updateData(userEntity, user);
+		
+		return userRepository.save(userEntity);
+	}
+
+	private void updateData(User userEntity, User user) {
+		
+		userEntity.setName(user.getName());
+		userEntity.setEmail(user.getEmail());
+		userEntity.setPhone(user.getPhone());
+		
+		
+	}
+	
 	
 	
 	
