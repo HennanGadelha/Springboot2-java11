@@ -3,6 +3,8 @@ package com.treinamentojavaweb.projetowebservicespringboot.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -56,11 +58,16 @@ public class UserService {
 	
 	public User update(Long id, User user) {
 		
-		User userEntity = userRepository.getOne(id);
-		
-		updateData(userEntity, user);
-		
-		return userRepository.save(userEntity);
+		try {
+			User userEntity = userRepository.getOne(id);
+			
+			updateData(userEntity, user);
+			
+			return userRepository.save(userEntity);
+		} catch (EntityNotFoundException e) {
+			// TODO Auto-generated catch block
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateData(User userEntity, User user) {
